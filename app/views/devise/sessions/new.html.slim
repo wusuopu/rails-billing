@@ -1,0 +1,25 @@
+- @title = "Login"
+div.container
+  div.col-sm-6.col-sm-offset-3.col-xs-10.col-xs-offset-1.login
+    = form_for(resource, as: resource_name, url: session_path(resource_name), html: { :class => "form-horizontal"}) do |f|
+      div class="form-group"
+        = f.label :email, :class => "col-xs-2 control-label"
+        div.col-xs-10
+          = f.email_field :email, autofocus: true
+
+      div class="form-group"
+        = f.label :password, :class => "col-xs-2 control-label"
+        div.col-xs-10
+          = f.password_field :password, autocomplete: "off"
+
+      - if devise_mapping.rememberable?
+        div class="form-group"
+          div.col-xs-offset-2.col-xs-10
+            div.checkbox
+              label
+                = f.check_box :remember_me
+                |  Remember me
+
+      div class="form-group"
+        div class="col-xs-10 col-xs-offset-2"
+          = f.submit "Log in", :class => "btn btn-default"

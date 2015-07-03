@@ -9,6 +9,7 @@ class User
          :recoverable, :rememberable, :trackable, :validatable
 
   ## Database authenticatable
+  field :email
   field :encrypted_password, type: String, default: ""
 
   ## Recoverable
@@ -39,4 +40,6 @@ class User
 
   field :username
   field :is_admin, type: Boolean, default: false
+
+  index({ username: 1 }, { unique: true, name: "username_index" })
 end
