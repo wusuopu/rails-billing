@@ -1,0 +1,9 @@
+# A sample Bowerfile
+# Check out https://github.com/42dev/bower-rails#ruby-dsl-configuration for more options
+
+# asset 'bootstrap'asset 'angular'
+asset 'angular-route'
+asset 'angular-resource'
+asset 'angular-mocks'
+asset 'angular-flash'
+asset 'bootstrap-sass-official'
