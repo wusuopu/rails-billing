@@ -17,5 +17,10 @@
 //= require angular-resource/angular-resource
 //= require angular-flash/dist/angular-flash
 //= require angular-rails-templates
+//= require bootstrap-sass-official/assets/javascripts/bootstrap
+//= require bootstrap-sass-official/assets/javascripts/bootstrap-sprockets
 //= require_tree ./templates
 //= require_tree .
+//
+//= require metis/core
+//= require metis/app

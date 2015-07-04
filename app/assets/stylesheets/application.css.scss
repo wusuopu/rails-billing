@@ -14,5 +14,10 @@
  *= require_self
  */
 
-@import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
 @import "bootstrap-sass-official/assets/stylesheets/bootstrap";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap-sprockets";
+@import "components-font-awesome/css/font-awesome";
+
+@import "metis/main.css";
+@import "metis/theme.css";
+@import "metis/style-switcher.css";
