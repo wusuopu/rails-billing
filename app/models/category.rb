@@ -14,5 +14,5 @@ class Category
   index({ name: 1 }, {})
 
   validates :name, presence: true
-  validates_inclusion_of :type, in: ["0", "1"]
+  validates_inclusion_of :type, in: [0, 1]
 end

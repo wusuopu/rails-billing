@@ -20,4 +20,12 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  menu: "Menu"
+  dashboard: "Dashboard"
+  category: "Category"
+  category_list: "Category List"
+  category_new: "New Category"
+  bill: "Bill"
+  bill_billing: "Billing"
+  bill_new: "New Billing"
+  bill_analysis: "Analysis"

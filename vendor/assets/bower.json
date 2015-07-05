@@ -5,6 +5,7 @@
     "angular-resource": "latest",
     "angular-mocks": "latest",
     "angular-flash": "latest",
+    "angular-loading-bar": "latest",
     "bootstrap-sass-official": "latest",
     "components-font-awesome": "latest"
   }
