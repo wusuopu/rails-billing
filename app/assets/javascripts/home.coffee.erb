@@ -1,0 +1,46 @@
+# Place all the behaviors and hooks related to the matching controller here.
+# All this logic will automatically be available in application.js.
+# You can use CoffeeScript in this file: http://coffeescript.org/
+
+myApp = angular.module 'myApp', ['ngRoute', 'templates', 'angular-loading-bar']
+
+
+myApp.config ['$routeProvider', ($routeProvider)->
+  $routeProvider.when('/', {
+    title: "<%= I18n.t('dashboard') %>",
+    templateUrl: 'index.html',
+    controller: 'DashboardController'
+  }).when('/category', {        # 分类
+    title: "<%= I18n.t('category') %>",
+    templateUrl: 'category/index.html',
+    controller: 'CategoryController'
+  }).when('/category/new', {
+    title: "<%= I18n.t('category_new') %>",
+    templateUrl: 'category/edit.html',
+    controller: 'CategoryController'
+  }).when('/category/:id/edit', {
+    title: "<%= I18n.t('category_edit') %>",
+    templateUrl: 'category/edit.html',
+    controller: 'CategoryController'
+  }).when('/bill', {          # 帐目
+    title: "<%= I18n.t('bill') %>",
+    templateUrl: 'bill/index.html',
+    controller: 'CategoryController'
+  }).when('/bill/new', {
+    title: "<%= I18n.t('bill_new') %>",
+    templateUrl: 'bill/edit.html',
+    controller: 'CategoryController'
+  }).when('/bill/:id/edit', {
+    title: "<%= I18n.t('bill_edit') %>",
+    templateUrl: 'bill/edit.html',
+    controller: 'CategoryController'
+  }).otherwise({
+    redirectTo: '/'
+  })
+]
+
+myApp.controller 'DashboardController', ['$scope', ($scope)->
+]
+
+myApp.controller 'CategoryController', ['$scope', '$routeParams', ($scope, $routeParams)->
+]
