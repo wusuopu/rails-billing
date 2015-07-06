@@ -119,6 +119,12 @@ GEM
       rack-accept
       rack-mount
       virtus (>= 1.0.0)
+    grape-jbuilder (0.2.0)
+      grape (>= 0.3)
+      i18n
+      jbuilder
+      tilt
+      tilt-jbuilder (>= 0.4.0)
     hashie (3.4.2)
     hike (1.2.3)
     hiredis (0.6.0)
@@ -263,6 +269,9 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
+    tilt-jbuilder (0.6.1)
+      jbuilder
+      tilt (<= 1.5.0)
     timers (4.0.1)
       hitimes
     turbolinks (2.5.3)
@@ -316,6 +325,7 @@ DEPENDENCIES
   devise
   factory_girl_rails
   grape
+  grape-jbuilder
   jbuilder (~> 2.0)
   jquery-rails
   kaminari

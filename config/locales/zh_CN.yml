@@ -5,8 +5,16 @@ zh_CN:
   category_list: "分类列表"
   category_new: "新建分类"
   category_edit: "编辑分类"
+  category_type_0: "收入"
+  category_type_1: "支出"
   bill: "帐单"
   bill_billing: "帐目"
   bill_new: "记帐"
   bill_edit: "编辑帐目"
   bill_analysis: "分析"
+  edit: "编辑"
+  delete: "删除"
+
+  mongoid:
+    errors:
+      messages:

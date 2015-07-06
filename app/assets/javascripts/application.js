@@ -15,7 +15,7 @@
 //= require angular/angular
 //= require angular-route/angular-route
 //= require angular-resource/angular-resource
-//= require angular-flash/dist/angular-flash
+//= require angular-flash-messages/angular-flash
 //= require angular-loading-bar/build/loading-bar
 //= require angular-rails-templates
 //= require bootstrap-sass-official/assets/javascripts/bootstrap

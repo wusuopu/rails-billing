@@ -26,8 +26,16 @@ en:
   category_list: "Category List"
   category_new: "New Category"
   category_edit: "Edit Category"
+  category_type_0: "Income"
+  category_type_1: "Expense"
   bill: "Bill"
   bill_billing: "Billing"
   bill_new: "New Billing"
   bill_edit: "Edit Billing"
   bill_analysis: "Analysis"
+  edit: "Edit"
+  delete: "Delete"
+
+  mongoid:
+    errors:
+      messages:

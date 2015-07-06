@@ -2,8 +2,50 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-myApp = angular.module 'myApp', ['ngRoute', 'templates', 'angular-loading-bar']
+myApp = angular.module 'myApp', ['ngRoute', 'templates', 'angular-loading-bar', 'flash']
 
+
+# http ajax service
+myApp.factory "queryService", ['$http', ($http)->
+  {
+    http : (q, data)->
+      deferred = q.defer()
+      $http(data).
+        success((data, status, headers)->
+          deferred.resolve(data)
+        ).
+        error((data, status, headers)->
+          deferred.reject()
+        )
+      deferred.promise
+  }
+]
+
+myApp.factory('categoryFactory', ['queryService', '$q', (queryService, $q)->
+  {
+    getList: ()->
+      queryService.http($q, {
+        method: 'GET',
+        url: '/api/v1/categories.json',
+        params: {_: Date.now()},
+        timeout: 80000
+      })
+    getItem: (id)->
+      queryService.http($q, {
+        method: 'GET',
+        url: '/api/v1/categories/' + id + '.json',
+        params: {_: Date.now()},
+        timeout: 80000
+      })
+    getAll: ()->
+      queryService.http($q, {
+        method: 'GET',
+        url: '/api/v1/categories/all.json',
+        params: {_: Date.now()},
+        timeout: 80000
+      })
+  }
+])
 
 myApp.config ['$routeProvider', ($routeProvider)->
   $routeProvider.when('/', {
@@ -13,15 +55,31 @@ myApp.config ['$routeProvider', ($routeProvider)->
   }).when('/category', {        # 分类
     title: "<%= I18n.t('category') %>",
     templateUrl: 'category/index.html',
-    controller: 'CategoryController'
+    controller: 'CategoryListController',
+    resolve: {
+      category_list: (categoryFactory)->
+        categoryFactory.getList()
+    }
   }).when('/category/new', {
     title: "<%= I18n.t('category_new') %>",
     templateUrl: 'category/edit.html',
-    controller: 'CategoryController'
+    controller: 'CategoryDetailController'
+    resolve: {
+      category: (categoryFactory)->
+        {}
+      category_list: (categoryFactory)->
+        categoryFactory.getAll()
+    }
   }).when('/category/:id/edit', {
     title: "<%= I18n.t('category_edit') %>",
     templateUrl: 'category/edit.html',
-    controller: 'CategoryController'
+    controller: 'CategoryDetailController',
+    resolve: {
+      category: ($route, categoryFactory)->
+        categoryFactory.getItem($route.current.params.id)
+      category_list: (categoryFactory)->
+        categoryFactory.getAll()
+    }
   }).when('/bill', {          # 帐目
     title: "<%= I18n.t('bill') %>",
     templateUrl: 'bill/index.html',
@@ -42,5 +100,107 @@ myApp.config ['$routeProvider', ($routeProvider)->
 myApp.controller 'DashboardController', ['$scope', ($scope)->
 ]
 
-myApp.controller 'CategoryController', ['$scope', '$routeParams', ($scope, $routeParams)->
+# 分类列表
+myApp.controller 'CategoryListController', \
+                 ['$scope', '$http', 'flash', 'category_list', ($scope, $http, flash, category_list)->
+  $scope.category_list = category_list || {total_pages:0, total_count:0, current_page:1, data:[]}
+
+  # 删除分类
+  $scope.deleteItem = (obj, idx, ev)->
+    ev.preventDefault()
+    if !confirm("Delete '" + obj.name + "' item?")
+      return
+    $http({
+        method: 'DELETE',
+        url: '/api/v1/categories/' + obj.id + '.json',
+        timeout: 80000
+      }).
+      success((data, status, headers)->
+        flash 'Delete category "' + obj.name + '"success!'
+        $scope.category_list.data.splice(idx, 1)
+      ).
+      error((data, status, headers)->
+        console.log data, status
+      )
+
+  # 翻页
+  $scope.paging = (pageNum, ev)->
+    ev.preventDefault()
+    if pageNum < 1 || pageNum > $scope.category_list.total_pages || pageNum == $scope.category_list.current_page
+      return
+    $http({
+        method: 'GET',
+        url: '/api/v1/categories.json',
+        params: {page: pageNum, _: Date.now()},
+        timeout: 80000
+      }).
+      success((data, status, headers)->
+        $scope.category_list = data
+      ).
+      error((data, status, headers)->
+      )
+]
+
+# 新建、编辑分类信息
+myApp.controller 'CategoryDetailController', \
+                 ['$scope', '$routeParams', '$http', '$location', 'flash', 'category', 'category_list', \
+                  ($scope, $routeParams, $http, $location, flash, category, category_list)->
+  $scope.category = category || {}
+  $scope.category_list = category_list || []
+  $scope.category_type = [
+    {value: 0, name: '<%= I18n.t "category_type_0" %>'},
+    {value: 1, name: '<%= I18n.t "category_type_1" %>'}
+ ]
+
+  # filter parent category list
+  $scope.filterParent = (value, index)->
+    type = $scope.category.type || 0
+    type == value.type
+
+  # Submit the edit form
+  $scope.Submit = (isValid, ev)->
+    ev.preventDefault()
+    angular.forEach($scope.categoryForm.$error.required, (field)->
+      $scope.categoryForm[field.$name].$dirty = true
+      $scope.categoryForm[field.$name].$pristine = false
+    )
+    $scope.categoryForm.$setDirty()
+    unless isValid
+      return
+
+    if $scope.category.id
+      url = '/api/v1/categories/' + $scope.category.id + '.json'
+      message = "Update '" + $scope.category.name + "' success!"
+      method = 'PUT'
+    else
+      url = '/api/v1/categories.json'
+      method = 'POST'
+      message = "Create '" + $scope.category.name + "' success!"
+    data = {
+      name: $scope.category.name,
+      type: $scope.category.type
+    }
+    if $scope.category.parent
+      data.parent_id = $scope.category.parent.id
+
+    $http({
+        method: method,
+        url: url,
+        data: data,
+        timeout: 80000
+      }).
+      success((data, status, headers)->
+        $location.path '/category'
+        flash message
+      ).
+      error((data, status, headers)->
+        console.log data, status
+      )
+]
+
+
+myApp.run ['$location', '$rootScope', ($location, $rootScope)->
+  $rootScope.$on('$routeChangeSuccess', (event, current, previous)->
+    $rootScope.title = current.$$route.title
+  )
 ]

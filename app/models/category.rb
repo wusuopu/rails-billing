@@ -15,4 +15,8 @@ class Category
 
   validates :name, presence: true
   validates_inclusion_of :type, in: [0, 1]
+
+  def type_name
+    @type_name ||= I18n.t "category_type_#{type}"
+  end
 end

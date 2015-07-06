@@ -1,0 +1,33 @@
+{
+  "name": "angular-flash",
+  "version": "1.2.0",
+  "description": "Angular.js Flash Messages",
+  "keywords": [
+    "angular",
+    "js",
+    "flash",
+    "messages"
+  ],
+  "author": "Guilherme J. Tramontina <guilherme.tramontina@gmail.com>",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "angular": "~1",
+    "angular-mocks": "~1",
+    "angular-route": "~1"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "test"
+  ],
+  "homepage": "https://github.com/gtramontina/angular-flash",
+  "_release": "1.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.2.0",
+    "commit": "b3049a169dc7eba2d94f5bc30d39ebca088243c5"
+  },
+  "_source": "git://github.com/gtramontina/angular-flash.git",
+  "_target": "*",
+  "_originalSource": "angular-flash-messages"
+}

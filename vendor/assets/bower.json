@@ -6,6 +6,7 @@
     "angular-mocks": "latest",
     "angular-flash": "latest",
     "angular-loading-bar": "latest",
+    "angular-flash-messages": "latest",
     "bootstrap-sass-official": "latest",
     "components-font-awesome": "latest"
   }

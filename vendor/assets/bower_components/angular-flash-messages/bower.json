@@ -1,0 +1,14 @@
+{
+  "name"           : "angular-flash",
+  "version"        : "1.2.0",
+  "description"    : "Angular.js Flash Messages",
+  "keywords"       : [ "angular", "js", "flash", "messages" ],
+  "author"         : "Guilherme J. Tramontina <guilherme.tramontina@gmail.com>",
+  "readmeFilename" : "README.md",
+  "dependencies"   : {
+    "angular"      : "~1",
+    "angular-mocks": "~1",
+    "angular-route": "~1"
+  },
+  "ignore"         : [ "**/.*", "node_modules", "test" ]
+}
