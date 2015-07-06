@@ -1,0 +1,97 @@
+<div class="container">
+  <div class="row form-horizontal">
+    <div class="form-group">
+      <label class="control-label col-sm-1">Select Year:</label>
+      <div class="col-sm-2">
+        <select class="form-control chzn-select" id="chart-year">
+          <option ng-repeat="year in year_list" value="{{year}}">{{year}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-10">
+      <div id="line-chart" style="width:100%;height:400px"></div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+$(function () {
+    $('#line-chart').highcharts({
+        credits: {
+            enabled: false
+        },
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: ''
+        },
+        subtitle: {
+            text: ' '
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: ''
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: true
+            }
+        },
+        series: [{
+            name: 'Income',
+            data: []
+        }, {
+            name: 'Expense',
+            data: []
+        }]
+    });
+
+    function fetchData(year){
+      var data = {_: Date.now()};
+      if (year) { data.year = year ;}
+
+      var chart = $('#line-chart').highcharts();
+      chart.showLoading('loading');
+
+      // 获取数据
+      $.ajax('/api/v1/charts/line.json', {
+        data: data,
+        success: function(data, textStatus, jqx){
+          chart.setTitle({text: data.year + ' Year Income / Expense'});
+
+          var chartData1 = [];
+          $.each(data.income, function(index, value){
+            chartData1.push(value.value.amount);
+          });
+          var chartData2 = [];
+          $.each(data.expense, function(index, value){
+            chartData2.push(value.value.amount);
+          });
+          chart.series[0].setData(chartData1);
+          chart.series[1].setData(chartData2);
+
+          chart.hideLoading();
+        },
+        error: function(){
+          chart.hideLoading();
+        }
+      });
+    }
+
+    fetchData();
+
+    $('#chart-year').change(function(ev){
+      fetchData(ev.target.value);
+    });
+});
+</script>

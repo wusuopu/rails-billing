@@ -133,6 +133,11 @@ myApp.config ['$routeProvider', ($routeProvider)->
       category_list: (categoryFactory)->
         categoryFactory.getAll()
     }
+  }).when('/bill/chart', {          # 帐目
+    title: "<%= I18n.t('bill_chart') %>",
+    nav_icon: "credit-card",
+    templateUrl: 'bill/chart.html',
+    controller: 'BillChartController',
   }).otherwise({
     redirectTo: '/'
   })
@@ -337,11 +342,24 @@ myApp.controller 'BillDetailController', \
         console.log data, status
       )
 ]
+myApp.controller 'BillChartController', \
+                 ['$scope', '$http',  ($scope, $http)->
+  $scope.year_list = (()->
+    i = 2014
+    now = (new Date()).getFullYear()
+    l = []
+    while i <= now
+      l.push i
+      i++
+    l
+  )()
+]
 
 # 切换页面时设置标题
 myApp.run ['$location', '$rootScope', ($location, $rootScope)->
   $rootScope.$on('$routeChangeSuccess', (event, current, previous)->
-    $rootScope.title = current.$$route.title
-    $rootScope.nav_icon = current.$$route.nav_icon
+    if current.$$route
+      $rootScope.title = current.$$route.title
+      $rootScope.nav_icon = current.$$route.nav_icon
   )
 ]

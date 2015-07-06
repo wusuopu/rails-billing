@@ -10,6 +10,8 @@ class Bill
 
   belongs_to :category
 
+  index({ date: 1 }, {})
+
   validates_inclusion_of :type, in: [0, 1]
 
   def type_name

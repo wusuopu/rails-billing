@@ -167,5 +167,41 @@ module Billing
 
       end
     end
+
+    resources :charts do
+      get 'line' do
+        if params[:year].present?
+          year = params[:year].to_i
+        else
+          year = Date.today.year
+        end
+        map = %Q{
+          function() {
+            emit(this.date.getMonth(), { amount: this.amount });
+          }
+        }
+        reduce = %Q{
+          function(key, values) {
+            var result = { amount: 0 };
+            values.forEach(function(value) {
+              result.amount += value.amount;
+            });
+            return result;
+          }
+        }
+
+        {
+          year: year,
+          expense: Bill.where(
+              :date => {'$gte' => "#{year}-01-01", '$lt' => "#{year+1}-01-01" },
+              :type => Category::TYPE::EXPENSE
+            ).map_reduce(map, reduce).out(inline: true),
+          income: Bill.where(
+              :date => {'$gte' => "#{year}-01-01", '$lt' => "#{year+1}-01-01" },
+              :type => Category::TYPE::INCOME
+            ).map_reduce(map, reduce).out(inline: true)
+        }
+      end
+    end
   end
 end
