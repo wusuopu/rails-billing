@@ -7,7 +7,7 @@ module Billing
     format :json
     formatter :json, Grape::Formatter::Jbuilder
 
-    PER_PAGE = 40
+    PER_PAGE = 20
 
     helpers do
       def warden
@@ -95,6 +95,76 @@ module Billing
             error!(e.message, 500)
           end
         end
+
+      end
+    end
+
+    resource :bills do
+      # GET /bills
+      desc "Return bill list."
+      get jbuilder: 'bill/index' do
+        @bills = Bill.page(params[:page]).per(PER_PAGE).order(date: 1)
+      end
+      # POST /bills
+      desc "Create a bill record"
+      post do
+        begin
+          b = Bill.new(
+            amount: params[:amount],
+            type: params[:type] || Category::TYPE::EXPENSE,
+            category_id: params[:category_id],
+            title: params[:title],
+            description: params[:description]
+          )
+          b.date = params[:date] if params[:date].present?
+          b.save!
+          {success: true, data: b.id.to_s }
+        rescue Exception => e
+          error!(e.message, 500)
+        end
+      end
+
+
+      desc "Return a bill."
+      params do
+        requires :id, type: String, desc: "Bill id."
+      end
+      route_param :id do
+        # GET /bills/:id
+        get jbuilder: 'bill/bill' do
+          @bill = Bill.where(id: params[:id]).first
+          error!('404 Not Found', 404) unless @bill.present?
+        end
+        # DELETE /bills/:id
+        delete do
+          bill = Bill.where(id: params[:id]).first
+          begin
+            bill.destroy! if bill.present?
+            {success: true}
+          rescue Exception => e
+            error!(e.message, 500)
+          end
+        end
+        # PUT /categories/:id
+        put do
+          b = Bill.where(id: params[:id]).first
+          error!('404 Not Found', 404) unless b.present?
+
+          b.amount = params[:amount] if params[:amount].present?
+          b.type = params[:type] if params[:type].present?
+          b.date = params[:date] if params[:date].present?
+          b.title = params[:title] if params[:title]
+          b.description = params[:description] if params[:description]
+          b.category_id = params[:category_id] if params[:category_id]
+
+          begin
+            b.save!
+            {success: true, data: b.id.to_s }
+          rescue Exception => e
+            error!(e.message, 500)
+          end
+        end
+
       end
     end
   end

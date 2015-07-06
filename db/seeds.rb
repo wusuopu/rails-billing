@@ -19,3 +19,7 @@ Category.create!(name: "房租", type: Category::TYPE::EXPENSE, parent: c)
 
 c = Category.create!(name: "其它支出", type: Category::TYPE::EXPENSE)
 Category.create!(name: "其它支出", type: Category::TYPE::EXPENSE, parent: c)
+
+Bill.create!(type: Category::TYPE::EXPENSE, amount: 10.2, title: '零食', description: '零食小吃', category: c )
+Bill.create!(type: Category::TYPE::EXPENSE, amount: 21.5, title: '文具', description: '稿纸', category: c )
+Bill.create!(type: Category::TYPE::EXPENSE, amount: 32.3, title: '家具', description: '桌子', category: c )

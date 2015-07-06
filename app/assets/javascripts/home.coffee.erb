@@ -46,14 +46,34 @@ myApp.factory('categoryFactory', ['queryService', '$q', (queryService, $q)->
       })
   }
 ])
+myApp.factory('billFactory', ['queryService', '$q', (queryService, $q)->
+  {
+    getList: ()->
+      queryService.http($q, {
+        method: 'GET',
+        url: '/api/v1/bills.json',
+        params: {_: Date.now()},
+        timeout: 80000
+      })
+    getItem: (id)->
+      queryService.http($q, {
+        method: 'GET',
+        url: '/api/v1/bills/' + id + '.json',
+        params: {_: Date.now()},
+        timeout: 80000
+      })
+  }
+])
 
 myApp.config ['$routeProvider', ($routeProvider)->
   $routeProvider.when('/', {
     title: "<%= I18n.t('dashboard') %>",
+    nav_icon: "dashboard",
     templateUrl: 'index.html',
     controller: 'DashboardController'
   }).when('/category', {        # 分类
     title: "<%= I18n.t('category') %>",
+    nav_icon: "list",
     templateUrl: 'category/index.html',
     controller: 'CategoryListController',
     resolve: {
@@ -62,6 +82,7 @@ myApp.config ['$routeProvider', ($routeProvider)->
     }
   }).when('/category/new', {
     title: "<%= I18n.t('category_new') %>",
+    nav_icon: "list",
     templateUrl: 'category/edit.html',
     controller: 'CategoryDetailController'
     resolve: {
@@ -72,6 +93,7 @@ myApp.config ['$routeProvider', ($routeProvider)->
     }
   }).when('/category/:id/edit', {
     title: "<%= I18n.t('category_edit') %>",
+    nav_icon: "list",
     templateUrl: 'category/edit.html',
     controller: 'CategoryDetailController',
     resolve: {
@@ -82,16 +104,35 @@ myApp.config ['$routeProvider', ($routeProvider)->
     }
   }).when('/bill', {          # 帐目
     title: "<%= I18n.t('bill') %>",
+    nav_icon: "credit-card",
     templateUrl: 'bill/index.html',
-    controller: 'CategoryController'
+    controller: 'BillListController',
+    resolve: {
+      bill_list: (billFactory)->
+        billFactory.getList()
+    }
   }).when('/bill/new', {
     title: "<%= I18n.t('bill_new') %>",
+    nav_icon: "credit-card",
     templateUrl: 'bill/edit.html',
-    controller: 'CategoryController'
+    controller: 'BillDetailController',
+    resolve: {
+      bill: (billFactory)->
+        {}
+      category_list: (categoryFactory)->
+        categoryFactory.getAll()
+    }
   }).when('/bill/:id/edit', {
     title: "<%= I18n.t('bill_edit') %>",
+    nav_icon: "credit-card",
     templateUrl: 'bill/edit.html',
-    controller: 'CategoryController'
+    controller: 'BillDetailController',
+    resolve: {
+      bill: ($route, billFactory)->
+        billFactory.getItem($route.current.params.id)
+      category_list: (categoryFactory)->
+        categoryFactory.getAll()
+    }
   }).otherwise({
     redirectTo: '/'
   })
@@ -198,9 +239,109 @@ myApp.controller 'CategoryDetailController', \
       )
 ]
 
+# 帐目列表
+myApp.controller 'BillListController', \
+                 ['$scope', '$http', 'flash', 'bill_list', \
+                  ($scope, $http, flash, bill_list)->
+  $scope.bill_list = bill_list || {total_pages:0, total_count:0, current_page:1, data:[]}
+  # 删除分类
+  $scope.deleteItem = (obj, idx, ev)->
+    ev.preventDefault()
+    if !confirm("Delete this item?")
+      return
+    $http({
+        method: 'DELETE',
+        url: '/api/v1/bills/' + obj.id + '.json',
+        timeout: 80000
+      }).
+      success((data, status, headers)->
+        flash 'Delete bill "' + obj.id + '"success!'
+        $scope.bill_list.data.splice(idx, 1)
+      ).
+      error((data, status, headers)->
+        console.log data, status
+      )
+  # 翻页
+  $scope.paging = (pageNum, ev)->
+    ev.preventDefault()
+    if pageNum < 1 || pageNum > $scope.bill_list.total_pages || pageNum == $scope.bill_list.current_page
+      return
+    $http({
+        method: 'GET',
+        url: '/api/v1/bills.json',
+        params: {page: pageNum, _: Date.now()},
+        timeout: 80000
+      }).
+      success((data, status, headers)->
+        $scope.bill_list = data
+      ).
+      error((data, status, headers)->
+      )
+]
+# 新建、编辑帐目
+myApp.controller 'BillDetailController', \
+                 ['$scope', '$http', '$location', 'flash', 'bill', 'category_list', \
+                  ($scope, $http, $location, flash, bill, category_list)->
+  $scope.bill = bill || {}
+  $scope.category_list = category_list || []
+  $scope.category_type = [
+    {value: 0, name: '<%= I18n.t "category_type_0" %>'},
+    {value: 1, name: '<%= I18n.t "category_type_1" %>'}
+  ]
 
+  # filter parent category list
+  $scope.filterParent = (value, index)->
+    type = $scope.bill.type || 0
+    type == value.type
+
+  # Submit the edit form
+  $scope.Submit = (isValid, ev)->
+    ev.preventDefault()
+    angular.forEach($scope.billForm.$error.required, (field)->
+      $scope.billForm[field.$name].$dirty = true
+      $scope.billForm[field.$name].$pristine = false
+    )
+    $scope.billForm.$setDirty()
+    unless isValid
+      return
+
+    if $scope.bill.id
+      url = '/api/v1/bills/' + $scope.bill.id + '.json'
+      message = "Update '" + $scope.bill.id + "' success!"
+      method = 'PUT'
+    else
+      url = '/api/v1/bills.json'
+      method = 'POST'
+      message = "Create bill success!"
+    data = {
+      amount: $scope.bill.amount,
+      title: $scope.bill.title,
+      description: $scope.bill.description,
+      date: $scope.bill.date,
+      type: $scope.bill.type
+    }
+    if $scope.bill.category
+      data.category_id = $scope.bill.category.id
+
+    $http({
+        method: method,
+        url: url,
+        data: data,
+        timeout: 80000
+      }).
+      success((data, status, headers)->
+        $location.path '/bill'
+        flash message
+      ).
+      error((data, status, headers)->
+        console.log data, status
+      )
+]
+
+# 切换页面时设置标题
 myApp.run ['$location', '$rootScope', ($location, $rootScope)->
   $rootScope.$on('$routeChangeSuccess', (event, current, previous)->
     $rootScope.title = current.$$route.title
+    $rootScope.nav_icon = current.$$route.nav_icon
   )
 ]

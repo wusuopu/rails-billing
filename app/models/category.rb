@@ -1,5 +1,6 @@
 class Category
   include Mongoid::Document
+  include Mongoid::Timestamps
 
   field :name
   field :type, type: Integer, default: 0

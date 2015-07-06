@@ -1,5 +1,20 @@
 <div class="">
    <div class="row">
+      <div class="col-sm-12">
+         <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+            <ul class="pagination">
+              <li class="paginate_button previous" ng-class="{disabled: category_list.current_page <= 1}" aria-controls="dataTable" tabindex="0" id="dataTable_previous">
+                <a href="#" ng-click="paging(category_list.current_page-1, $event)">Previous</a>
+              </li>
+              <li class="paginate_button next" ng-class="{disabled: category_list.current_page >= category_list.total_pages}" aria-controls="dataTable" tabindex="0" id="dataTable_next">
+                <a href="#" ng-click="paging(category_list.current_page+1, $event)">Next</a>
+              </li>
+              <span class="btn btn-default btn-rect">Pages: {{category_list.current_page}} / {{category_list.total_pages}}</span>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <div class="row">
       <div class="table-responsive col-sm-12">
          <table class="table table-bordered table-condensed table-hover table-striped dataTable no-footer">
             <thead>
