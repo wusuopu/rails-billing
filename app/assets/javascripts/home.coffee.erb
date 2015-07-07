@@ -77,8 +77,9 @@ myApp.config ['$routeProvider', ($routeProvider)->
     templateUrl: 'category/index.html',
     controller: 'CategoryListController',
     resolve: {
-      category_list: (categoryFactory)->
+      category_list: ['categoryFactory', (categoryFactory)->
         categoryFactory.getList()
+      ]
     }
   }).when('/category/new', {
     title: "<%= I18n.t('category_new') %>",
@@ -86,10 +87,12 @@ myApp.config ['$routeProvider', ($routeProvider)->
     templateUrl: 'category/edit.html',
     controller: 'CategoryDetailController'
     resolve: {
-      category: (categoryFactory)->
+      category: ['categoryFactory', (categoryFactory)->
         {}
-      category_list: (categoryFactory)->
+      ]
+      category_list: ['categoryFactory', (categoryFactory)->
         categoryFactory.getAll()
+      ]
     }
   }).when('/category/:id/edit', {
     title: "<%= I18n.t('category_edit') %>",
@@ -97,10 +100,12 @@ myApp.config ['$routeProvider', ($routeProvider)->
     templateUrl: 'category/edit.html',
     controller: 'CategoryDetailController',
     resolve: {
-      category: ($route, categoryFactory)->
+      category: ['$route', 'categoryFactory', ($route, categoryFactory)->
         categoryFactory.getItem($route.current.params.id)
-      category_list: (categoryFactory)->
+      ]
+      category_list: ['categoryFactory', (categoryFactory)->
         categoryFactory.getAll()
+      ]
     }
   }).when('/bill', {          # 帐目
     title: "<%= I18n.t('bill') %>",
@@ -108,8 +113,9 @@ myApp.config ['$routeProvider', ($routeProvider)->
     templateUrl: 'bill/index.html',
     controller: 'BillListController',
     resolve: {
-      bill_list: (billFactory)->
+      bill_list: ['billFactory', (billFactory)->
         billFactory.getList()
+      ]
     }
   }).when('/bill/new', {
     title: "<%= I18n.t('bill_new') %>",
@@ -117,10 +123,12 @@ myApp.config ['$routeProvider', ($routeProvider)->
     templateUrl: 'bill/edit.html',
     controller: 'BillDetailController',
     resolve: {
-      bill: (billFactory)->
+      bill: ['billFactory', (billFactory)->
         {}
-      category_list: (categoryFactory)->
+      ]
+      category_list: ['categoryFactory', (categoryFactory)->
         categoryFactory.getAll()
+      ]
     }
   }).when('/bill/:id/edit', {
     title: "<%= I18n.t('bill_edit') %>",
@@ -128,10 +136,12 @@ myApp.config ['$routeProvider', ($routeProvider)->
     templateUrl: 'bill/edit.html',
     controller: 'BillDetailController',
     resolve: {
-      bill: ($route, billFactory)->
+      bill: ['$route', 'billFactory', ($route, billFactory)->
         billFactory.getItem($route.current.params.id)
-      category_list: (categoryFactory)->
+      ]
+      category_list: ['categoryFactory', (categoryFactory)->
         categoryFactory.getAll()
+      ]
     }
   }).when('/bill/chart', {          # 帐目
     title: "<%= I18n.t('bill_chart') %>",
