@@ -47,7 +47,7 @@
         emit(messages = asArrayOfMessages(level, text));
       };
 
-      ['error', 'warning', 'info', 'success'].forEach(function (level) {
+      ['danger', 'warning', 'info', 'success'].forEach(function (level) {
         flash[level] = function (text) { flash(level, text); };
       });
 

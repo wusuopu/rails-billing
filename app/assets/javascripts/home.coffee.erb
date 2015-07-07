@@ -6,7 +6,7 @@ myApp = angular.module 'myApp', ['ngRoute', 'templates', 'angular-loading-bar', 
 
 
 # http ajax service
-myApp.factory "queryService", ['$http', ($http)->
+myApp.factory "queryService", ['$http', 'flash', ($http, flash)->
   {
     http : (q, data)->
       deferred = q.defer()
@@ -16,6 +16,7 @@ myApp.factory "queryService", ['$http', ($http)->
         ).
         error((data, status, headers)->
           deferred.reject()
+          flash.danger data.error
         )
       deferred.promise
   }
@@ -251,7 +252,7 @@ myApp.controller 'CategoryListController', \
         $scope.category_list.data.splice(idx, 1)
       ).
       error((data, status, headers)->
-        console.log data, status
+        flash.danger data.error
       )
 
   # 翻页
@@ -269,6 +270,7 @@ myApp.controller 'CategoryListController', \
         $scope.category_list = data
       ).
       error((data, status, headers)->
+        flash.danger data.error
       )
 ]
 
@@ -335,7 +337,7 @@ myApp.controller 'CategoryDetailController', \
         )
       ).
       error((data, status, headers)->
-        console.log data, status
+        flash.danger data.error
       )
 ]
 
@@ -361,7 +363,7 @@ myApp.controller 'BillListController', \
         $scope.bill_list.data.splice(idx, 1)
       ).
       error((data, status, headers)->
-        console.log data, status
+        flash.danger data.error
       )
   # 翻页
   $scope.paging = (pageNum, ev)->
@@ -378,6 +380,7 @@ myApp.controller 'BillListController', \
         $scope.bill_list = data
       ).
       error((data, status, headers)->
+        flash.danger data.error
       )
 ]
 # 新建、编辑帐目
@@ -446,7 +449,7 @@ myApp.controller 'BillDetailController', \
         )
       ).
       error((data, status, headers)->
-        console.log data, status
+        flash.danger data.error
       )
 ]
 myApp.controller 'BillChartController', \

@@ -22,6 +22,9 @@ module Billing
       def handle_not_authenticated
         error!('401 Unauthorized!', 401)
       end
+      def admin!
+        error!('403 Forbidden!', 403) unless (warden.authenticated? && warden.user.is_admin)
+      end
     end
 
     before do
@@ -39,6 +42,7 @@ module Billing
       # POST /categories
       desc "Create a new record"
       post do
+        admin!
         begin
           c = Category.create!(
             name: params[:name],
@@ -70,6 +74,7 @@ module Billing
         # delete a record
         # DELETE /categories/:id
         delete do
+          admin!
           category = Category.where(id: params[:id]).first
           begin
             category.destroy! if category.present?
@@ -81,6 +86,7 @@ module Billing
         # edit a record
         # PUT /categories/:id
         put do
+          admin!
           c = Category.where(id: params[:id]).first
           error!('404 Not Found', 404) unless c.present?
 
@@ -108,6 +114,7 @@ module Billing
       # POST /bills
       desc "Create a bill record"
       post do
+        admin!
         begin
           b = Bill.new(
             amount: params[:amount],
@@ -137,6 +144,7 @@ module Billing
         end
         # DELETE /bills/:id
         delete do
+          admin!
           bill = Bill.where(id: params[:id]).first
           begin
             bill.destroy! if bill.present?
@@ -147,6 +155,7 @@ module Billing
         end
         # PUT /categories/:id
         put do
+          admin!
           b = Bill.where(id: params[:id]).first
           error!('404 Not Found', 404) unless b.present?
 
