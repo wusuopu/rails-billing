@@ -1,19 +1,19 @@
 <form name="categoryForm" class="form-horizontal" novalidate ng-submit="Submit(categoryForm.$valid, $event)">
   <div class="form-group" ng-class="{'has-error' : categoryForm.name.$invalid && categoryForm.name.$dirty, 'has-success' : categoryForm.name.$valid}">
-    <label class="control-label col-lg-4" for="name">Name</label>
+    <label class="control-label col-lg-4" for="name">{{ "category_name" | translate }}</label>
     <div class="col-lg-8">
       <input type="text" class="form-control" placeholder="Name" name="name" ng-model="category.name" required>
     </div>
   </div><!-- /.form-group -->
   <div class="form-group" ng-class="{'has-error' : categoryForm.type.$invalid && categoryForm.type.$dirty, 'has-success' : categoryForm.type.$valid}">
-    <label class="control-label col-lg-4">Type</label>
+    <label class="control-label col-lg-4">{{ "category_type" | translate }}</label>
     <div class="col-lg-8">
       <select class="form-control" name="type" required ng-model="category.type"
               ng-options="type.value as type.name for type in category_type"></select>
     </div>
   </div><!-- /.form-group -->
   <div class="form-group">
-    <label class="control-label col-lg-4">Parent</label>
+    <label class="control-label col-lg-4">{{ "category_parent" | translate }}</label>
     <div class="col-lg-8">
       <select class="form-control" name="parent_id" ng-model="category.parent.id"
               ng-options="c.id as c.name for c in category_list | filter:filterParent"></select>

@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-myApp = angular.module 'myApp', ['ngRoute', 'templates', 'angular-loading-bar', 'flash']
+myApp = angular.module 'myApp', ['ngRoute', 'templates', 'angular-loading-bar', 'flash', 'pascalprecht.translate']
 
 
 # http ajax service
@@ -65,14 +65,14 @@ myApp.factory('billFactory', ['queryService', '$q', (queryService, $q)->
   }
 ])
 
-myApp.config ['$routeProvider', ($routeProvider)->
+myApp.config ['$routeProvider', '$translateProvider', ($routeProvider, $translateProvider)->
   $routeProvider.when('/', {
-    title: "<%= I18n.t('dashboard') %>",
+    title: "page.dashboard",
     nav_icon: "dashboard",
     templateUrl: 'index.html',
     controller: 'DashboardController'
   }).when('/category', {        # 分类
-    title: "<%= I18n.t('category') %>",
+    title: "page.category",
     nav_icon: "list",
     templateUrl: 'category/index.html',
     controller: 'CategoryListController',
@@ -82,7 +82,7 @@ myApp.config ['$routeProvider', ($routeProvider)->
       ]
     }
   }).when('/category/new', {
-    title: "<%= I18n.t('category_new') %>",
+    title: "page.category_new",
     nav_icon: "list",
     templateUrl: 'category/edit.html',
     controller: 'CategoryDetailController'
@@ -95,7 +95,7 @@ myApp.config ['$routeProvider', ($routeProvider)->
       ]
     }
   }).when('/category/:id/edit', {
-    title: "<%= I18n.t('category_edit') %>",
+    title: "page.category_edit",
     nav_icon: "list",
     templateUrl: 'category/edit.html',
     controller: 'CategoryDetailController',
@@ -108,7 +108,7 @@ myApp.config ['$routeProvider', ($routeProvider)->
       ]
     }
   }).when('/bill', {          # 帐目
-    title: "<%= I18n.t('bill') %>",
+    title: "page.bill",
     nav_icon: "credit-card",
     templateUrl: 'bill/index.html',
     controller: 'BillListController',
@@ -118,7 +118,7 @@ myApp.config ['$routeProvider', ($routeProvider)->
       ]
     }
   }).when('/bill/new', {
-    title: "<%= I18n.t('bill_new') %>",
+    title: "page.bill_new",
     nav_icon: "credit-card",
     templateUrl: 'bill/edit.html',
     controller: 'BillDetailController',
@@ -131,7 +131,7 @@ myApp.config ['$routeProvider', ($routeProvider)->
       ]
     }
   }).when('/bill/:id/edit', {
-    title: "<%= I18n.t('bill_edit') %>",
+    title: "page.bill_edit",
     nav_icon: "credit-card",
     templateUrl: 'bill/edit.html',
     controller: 'BillDetailController',
@@ -144,13 +144,85 @@ myApp.config ['$routeProvider', ($routeProvider)->
       ]
     }
   }).when('/bill/chart', {          # 帐目
-    title: "<%= I18n.t('bill_chart') %>",
+    title: "page.bill_chart",
     nav_icon: "credit-card",
     templateUrl: 'bill/chart.html',
     controller: 'BillChartController',
   }).otherwise({
     redirectTo: '/'
   })
+
+  $translateProvider.translations('en', {
+    'edit_op': 'Edit'
+    'delete_op': 'Delete'
+    'previous_page': 'Previous'
+    'next_page': 'Next'
+    'pages': 'Pages:'
+    'bill_category': 'Category'
+    'bill_type': 'Type'
+    'bill_amount': 'Amount'
+    'bill_date': 'Date'
+    'bill_title': 'Title'
+    'bill_description': 'Description'
+    'bill_operate': 'Operate'
+    'category_name': 'Name'
+    'category_type': 'Type'
+    'category_parent': 'Parent'
+    'category_operate': 'Operate'
+    'flash_msg_category_delete': 'Delete category "{{name}}" success!'
+    'flash_msg_category_update': 'Update category "{{name}}" success!'
+    'flash_msg_category_create': 'Create category "{{name}}" success!'
+    'flash_msg_bill_delete': 'Delete bill "{{id}}" success!'
+    'flash_msg_bill_update': 'Update bill "{{id}}" success!'
+    'flash_msg_bill_create': 'Create bill success!'
+    'category_type_0': 'Income'
+    'category_type_1': 'Expense'
+    'page.dashboard': 'Dashboard'
+    'page.category': 'Category'
+    'page.category_new': 'New Category'
+    'page.category_edit': 'Edit Category'
+    'page.bill': 'Bill'
+    'page.bill_new': 'New Billing'
+    'page.bill_edit': 'Edit Billing'
+    'page.bill_chart': 'Billing Chart'
+
+  }).translations('zh-cn', {
+    'edit_op': '编辑'
+    'delete_op': '删除'
+    'previous_page': '上一页'
+    'next_page': '下一页'
+    'pages': '页数：'
+    'bill_category': '分类'
+    'bill_type': '类型'
+    'bill_amount': '金额'
+    'bill_date': '日期'
+    'bill_title': '标题'
+    'bill_description': '描述'
+    'bill_operate': '操作'
+    'category_name': '名称'
+    'category_type': '类型'
+    'category_parent': '父分类'
+    'category_operate': '操作'
+    'flash_msg_category_delete': '删除分类 "{{name}}" 成功！'
+    'flash_msg_category_update': '更新分类 "{{name}}" 成功！'
+    'flash_msg_category_create': '创建分类 "{{name}}" 成功！'
+    'flash_msg_bill_delete': '删除帐目 "{{id}}" 成功！'
+    'flash_msg_bill_update': '更新帐目 "{{id}}" 成功！'
+    'flash_msg_bill_create': '新建帐目成功！'
+    'category_type_0': '收入'
+    'category_type_1': '支出'
+    'page.dashboard': '控制面板'
+    'page.category': '分类'
+    'page.category_new': '新建分类'
+    'page.category_edit': '编辑分类'
+    'page.bill': '帐单'
+    'page.bill_new': '记帐'
+    'page.bill_edit': '编辑帐目'
+    'page.bill_chart': '帐目图表'
+  }).fallbackLanguage(['en'])
+  $translateProvider.determinePreferredLanguage(()->
+    if navigator.locale then navigator.locale else ""
+  )
 ]
 
 myApp.controller 'DashboardController', ['$scope', ($scope)->
@@ -158,7 +230,8 @@ myApp.controller 'DashboardController', ['$scope', ($scope)->
 
 # 分类列表
 myApp.controller 'CategoryListController', \
-                 ['$scope', '$http', 'flash', 'category_list', ($scope, $http, flash, category_list)->
+                 ['$scope', '$http', '$translate', 'flash', 'category_list', \
+                  ($scope, $http, $translate, flash, category_list)->
   $scope.category_list = category_list || {total_pages:0, total_count:0, current_page:1, data:[]}
 
   # 删除分类
@@ -172,7 +245,9 @@ myApp.controller 'CategoryListController', \
         timeout: 80000
       }).
       success((data, status, headers)->
-        flash 'Delete category "' + obj.name + '"success!'
+        $translate('flash_msg_category_delete', { name: obj.name}).then((text)->
+          flash text
+        )
         $scope.category_list.data.splice(idx, 1)
       ).
       error((data, status, headers)->
@@ -199,14 +274,16 @@ myApp.controller 'CategoryListController', \
 
 # 新建、编辑分类信息
 myApp.controller 'CategoryDetailController', \
-                 ['$scope', '$routeParams', '$http', '$location', 'flash', 'category', 'category_list', \
-                  ($scope, $routeParams, $http, $location, flash, category, category_list)->
+                 ['$scope', '$routeParams', '$http', '$location', '$translate', 'flash', 'category', 'category_list', \
+                  ($scope, $routeParams, $http, $location, $translate, flash, category, category_list)->
   $scope.category = category || {}
   $scope.category_list = category_list || []
-  $scope.category_type = [
-    {value: 0, name: '<%= I18n.t "category_type_0" %>'},
-    {value: 1, name: '<%= I18n.t "category_type_1" %>'}
- ]
+  $translate(['category_type_0', 'category_type_1']).then((translations)->
+    $scope.category_type = [
+      {value: 0, name: translations['category_type_0'] },
+      {value: 1, name: translations['category_type_1'] }
+    ]
+  )
 
   # filter parent category list
   $scope.filterParent = (value, index)->
@@ -226,12 +303,18 @@ myApp.controller 'CategoryDetailController', \
 
     if $scope.category.id
       url = '/api/v1/categories/' + $scope.category.id + '.json'
-      message = "Update '" + $scope.category.name + "' success!"
+      message = {
+        msg: "flash_msg_category_update"
+        data: {name: $scope.category.name}
+      }
       method = 'PUT'
     else
       url = '/api/v1/categories.json'
+      message = {
+        msg: "flash_msg_category_create"
+        data: {name: $scope.category.name}
+      }
       method = 'POST'
-      message = "Create '" + $scope.category.name + "' success!"
     data = {
       name: $scope.category.name,
       type: $scope.category.type
@@ -247,7 +330,9 @@ myApp.controller 'CategoryDetailController', \
       }).
       success((data, status, headers)->
         $location.path '/category'
-        flash message
+        $translate(message.msg, message.data).then((text)->
+          flash text
+        )
       ).
       error((data, status, headers)->
         console.log data, status
@@ -256,8 +341,8 @@ myApp.controller 'CategoryDetailController', \
 
 # 帐目列表
 myApp.controller 'BillListController', \
-                 ['$scope', '$http', 'flash', 'bill_list', \
-                  ($scope, $http, flash, bill_list)->
+                 ['$scope', '$http', '$translate', 'flash', 'bill_list', \
+                  ($scope, $http, $translate, flash, bill_list)->
   $scope.bill_list = bill_list || {total_pages:0, total_count:0, current_page:1, data:[]}
   # 删除分类
   $scope.deleteItem = (obj, idx, ev)->
@@ -270,7 +355,9 @@ myApp.controller 'BillListController', \
         timeout: 80000
       }).
       success((data, status, headers)->
-        flash 'Delete bill "' + obj.id + '"success!'
+        $translate('flash_msg_bill_delete', { id: obj.id}).then((text)->
+          flash text
+        )
         $scope.bill_list.data.splice(idx, 1)
       ).
       error((data, status, headers)->
@@ -295,14 +382,16 @@ myApp.controller 'BillListController', \
 ]
 # 新建、编辑帐目
 myApp.controller 'BillDetailController', \
-                 ['$scope', '$http', '$location', 'flash', 'bill', 'category_list', \
-                  ($scope, $http, $location, flash, bill, category_list)->
+                 ['$scope', '$http', '$location', '$translate', 'flash', 'bill', 'category_list', \
+                  ($scope, $http, $location, $translate, flash, bill, category_list)->
   $scope.bill = bill || {}
   $scope.category_list = category_list || []
-  $scope.category_type = [
-    {value: 0, name: '<%= I18n.t "category_type_0" %>'},
-    {value: 1, name: '<%= I18n.t "category_type_1" %>'}
-  ]
+  $translate(['category_type_0', 'category_type_1']).then((translations)->
+    $scope.category_type = [
+      {value: 0, name: translations['category_type_0'] },
+      {value: 1, name: translations['category_type_1'] }
+    ]
+  )
 
   # filter parent category list
   $scope.filterParent = (value, index)->
@@ -322,12 +411,18 @@ myApp.controller 'BillDetailController', \
 
     if $scope.bill.id
       url = '/api/v1/bills/' + $scope.bill.id + '.json'
-      message = "Update '" + $scope.bill.id + "' success!"
+      message = {
+        msg: "flash_msg_bill_update"
+        data: {id: $scope.bill.id}
+      }
       method = 'PUT'
     else
       url = '/api/v1/bills.json'
+      message = {
+        msg: "flash_msg_bill_create"
+        data: {}
+      }
       method = 'POST'
-      message = "Create bill success!"
     data = {
       amount: $scope.bill.amount,
       title: $scope.bill.title,
@@ -346,7 +441,9 @@ myApp.controller 'BillDetailController', \
       }).
       success((data, status, headers)->
         $location.path '/bill'
-        flash message
+        $translate(message.msg, message.data).then((text)->
+          flash text
+        )
       ).
       error((data, status, headers)->
         console.log data, status
@@ -366,10 +463,12 @@ myApp.controller 'BillChartController', \
 ]
 
 # 切换页面时设置标题
-myApp.run ['$location', '$rootScope', ($location, $rootScope)->
+myApp.run ['$location', '$rootScope', '$translate', ($location, $rootScope, $translate)->
   $rootScope.$on('$routeChangeSuccess', (event, current, previous)->
     if current.$$route
-      $rootScope.title = current.$$route.title
-      $rootScope.nav_icon = current.$$route.nav_icon
+      $translate(current.$$route.title).then((text)->
+        $rootScope.title = text
+        $rootScope.nav_icon = current.$$route.nav_icon
+      )
   )
 ]

@@ -4,12 +4,12 @@
          <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
             <ul class="pagination">
               <li class="paginate_button previous" ng-class="{disabled: category_list.current_page <= 1}" aria-controls="dataTable" tabindex="0" id="dataTable_previous">
-                <a href="#" ng-click="paging(category_list.current_page-1, $event)">Previous</a>
+                <a href="#" ng-click="paging(category_list.current_page-1, $event)">{{ 'previous_page' | translate }}</a>
               </li>
               <li class="paginate_button next" ng-class="{disabled: category_list.current_page >= category_list.total_pages}" aria-controls="dataTable" tabindex="0" id="dataTable_next">
-                <a href="#" ng-click="paging(category_list.current_page+1, $event)">Next</a>
+                <a href="#" ng-click="paging(category_list.current_page+1, $event)">{{ 'next_page' | translate }}</a>
               </li>
-              <span class="btn btn-default btn-rect">Pages: {{category_list.current_page}} / {{category_list.total_pages}}</span>
+              <span class="btn btn-default btn-rect">{{ 'pages'| translate }} {{category_list.current_page}} / {{category_list.total_pages}}</span>
             </ul>
          </div>
       </div>
@@ -19,10 +19,10 @@
          <table class="table table-bordered table-condensed table-hover table-striped dataTable no-footer">
             <thead>
                <tr>
-                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">Name</th>
-                 <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1">Type</th>
-                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">Parent</th>
-                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">Operate</th>
+                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">{{ "category_name" | translate }}</th>
+                 <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1">{{ "category_type" | translate }}</th>
+                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">{{ "category_parent" | translate }}</th>
+                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">{{ "category_operate" | translate }}</th>
                </tr>
             </thead>
             <tbody>
@@ -31,8 +31,8 @@
                   <td>{{c.type_name}}</td>
                   <td>{{c.parent && c.parent.name}}</td>
                   <td>
-                    <a href="#/category/{{c.id}}/edit"><%= I18n.t('edit') %></a>
-                    <a href="#" ng-click="deleteItem(c, $index, $event)"><%= I18n.t('delete') %></a>
+                    <a href="#/category/{{c.id}}/edit">{{ 'edit_op' | translate }}</a>
+                    <a href="#" ng-click="deleteItem(c, $index, $event)">{{ 'delete_op' | translate }}</a>
                   </td>
                </tr>
             </tbody>
@@ -44,12 +44,12 @@
          <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
             <ul class="pagination">
               <li class="paginate_button previous" ng-class="{disabled: category_list.current_page <= 1}" aria-controls="dataTable" tabindex="0" id="dataTable_previous">
-                <a href="#" ng-click="paging(category_list.current_page-1, $event)">Previous</a>
+                <a href="#" ng-click="paging(category_list.current_page-1, $event)">{{ 'previous_page' | translate }}</a>
               </li>
               <li class="paginate_button next" ng-class="{disabled: category_list.current_page >= category_list.total_pages}" aria-controls="dataTable" tabindex="0" id="dataTable_next">
-                <a href="#" ng-click="paging(category_list.current_page+1, $event)">Next</a>
+                <a href="#" ng-click="paging(category_list.current_page+1, $event)">{{ 'next_page' | translate }}</a>
               </li>
-              <span class="btn btn-default btn-rect">Pages: {{category_list.current_page}} / {{category_list.total_pages}}</span>
+              <span class="btn btn-default btn-rect">{{ 'pages'| translate }} {{category_list.current_page}} / {{category_list.total_pages}}</span>
             </ul>
          </div>
       </div>

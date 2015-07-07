@@ -1,37 +1,37 @@
 <form name="billForm" class="form-horizontal" novalidate ng-submit="Submit(billForm.$valid, $event)">
   <div class="form-group" ng-class="{'has-error' : billForm.amount.$invalid && billForm.amount.$dirty, 'has-success' : billForm.amount.$valid}">
-    <label class="control-label col-lg-4" for="amount">Amount</label>
+    <label class="control-label col-lg-4" for="amount">{{"bill_amount"| translate }}</label>
     <div class="col-lg-8">
       <input type="text" class="form-control" placeholder="Name" name="amount" ng-model="bill.amount" required>
     </div>
   </div><!-- /.form-group -->
   <div class="form-group">
-    <label class="control-label col-lg-4" for="title">Title</label>
+    <label class="control-label col-lg-4" for="title">{{ "bill_title" | translate }}</label>
     <div class="col-lg-8">
-      <input type="text" class="form-control" placeholder="Name" name="title" ng-model="bill.title">
+      <input type="text" class="form-control" placeholder="Title" name="title" ng-model="bill.title">
     </div>
   </div><!-- /.form-group -->
   <div class="form-group">
-    <label class="control-label col-lg-4" for="description">Description</label>
+    <label class="control-label col-lg-4" for="description">{{ "bill_description" | translate }}</label>
     <div class="col-lg-8">
-      <input type="text" class="form-control" placeholder="Name" name="description" ng-model="bill.description">
+      <input type="text" class="form-control" placeholder="Description" name="description" ng-model="bill.description">
     </div>
   </div><!-- /.form-group -->
   <div class="form-group">
-    <label class="control-label col-lg-4" for="date">Date</label>
+    <label class="control-label col-lg-4" for="date">{{ "bill_date" | translate }}</label>
     <div class="col-lg-8">
       <input id="bill-date" type="text" class="form-control" placeholder="Date" name="date" ng-model="bill.date">
     </div>
   </div><!-- /.form-group -->
   <div class="form-group" ng-class="{'has-error' : billForm.type.$invalid && billForm.type.$dirty, 'has-success' : billForm.type.$valid}">
-    <label class="control-label col-lg-4">Type</label>
+    <label class="control-label col-lg-4">{{ "bill_type" | translate }}</label>
     <div class="col-lg-8">
       <select class="form-control" name="type" required ng-model="bill.type"
               ng-options="type.value as type.name for type in category_type"></select>
     </div>
   </div><!-- /.form-group -->
   <div class="form-group">
-    <label class="control-label col-lg-4">Category</label>
+    <label class="control-label col-lg-4">{{ "bill_category" | translate }}</label>
     <div class="col-lg-8">
       <select class="form-control" name="parent_id" ng-model="bill.category.id"
               ng-options="c.id as c.name for c in category_list | filter:filterParent"></select>

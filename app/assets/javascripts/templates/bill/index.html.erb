@@ -4,12 +4,12 @@
          <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
             <ul class="pagination">
               <li class="paginate_button previous" ng-class="{disabled: bill_list.current_page <= 1}" aria-controls="dataTable" tabindex="0" id="dataTable_previous">
-                <a href="#" ng-click="paging(bill_list.current_page-1, $event)">Previous</a>
+                <a href="#" ng-click="paging(bill_list.current_page-1, $event)">{{ 'previous_page' | translate }}</a>
               </li>
               <li class="paginate_button next" ng-class="{disabled: bill_list.current_page >= bill_list.total_pages}" aria-controls="dataTable" tabindex="0" id="dataTable_next">
-                <a href="#" ng-click="paging(bill_list.current_page+1, $event)">Next</a>
+                <a href="#" ng-click="paging(bill_list.current_page+1, $event)">{{ 'next_page' | translate }}</a>
               </li>
-              <span class="btn btn-default btn-rect">Pages: {{bill_list.current_page}} / {{bill_list.total_pages}}</span>
+              <span class="btn btn-default btn-rect">{{ 'pages'| translate }} {{bill_list.current_page}} / {{bill_list.total_pages}}</span>
             </ul>
          </div>
       </div>
@@ -19,13 +19,13 @@
          <table class="table table-bordered table-condensed table-hover table-striped dataTable no-footer">
             <thead>
                <tr>
-                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">Category</th>
-                 <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1">Type</th>
-                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">Amount</th>
-                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">Date</th>
-                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">Title</th>
-                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">Description</th>
-                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">Operate</th>
+                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">{{ "bill_category" | translate }}</th>
+                 <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1">{{ "bill_type" | translate }}</th>
+                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">{{"bill_amount"| translate }}</th>
+                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">{{ "bill_date" | translate }}</th>
+                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">{{ "bill_title" | translate }}</th>
+                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">{{ "bill_description" | translate }}</th>
+                 <th class="sorting" tabindex="0" rowspan="1" colspan="1">{{ "bill_operate" | translate }}</th>
                </tr>
             </thead>
             <tbody>
@@ -37,8 +37,8 @@
                   <td>{{b.title}}</td>
                   <td>{{b.description}}</td>
                   <td>
-                    <a href="#/bill/{{b.id}}/edit"><%= I18n.t('edit') %></a>
-                    <a href="#" ng-click="deleteItem(b, $index, $event)"><%= I18n.t('delete') %></a>
+                    <a href="#/bill/{{b.id}}/edit">{{ 'edit_op' | translate }}</a>
+                    <a href="#" ng-click="deleteItem(b, $index, $event)">{{ 'delete_op' | translate }}</a>
                   </td>
                </tr>
             </tbody>
@@ -50,12 +50,12 @@
          <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
             <ul class="pagination">
               <li class="paginate_button previous" ng-class="{disabled: bill_list.current_page <= 1}" aria-controls="dataTable" tabindex="0" id="dataTable_previous">
-                <a href="#" ng-click="paging(bill_list.current_page-1, $event)">Previous</a>
+                <a href="#" ng-click="paging(bill_list.current_page-1, $event)">{{ 'previous_page' | translate }}</a>
               </li>
               <li class="paginate_button next" ng-class="{disabled: bill_list.current_page >= bill_list.total_pages}" aria-controls="dataTable" tabindex="0" id="dataTable_next">
-                <a href="#" ng-click="paging(bill_list.current_page+1, $event)">Next</a>
+                <a href="#" ng-click="paging(bill_list.current_page+1, $event)">{{ 'next_page' | translate }}</a>
               </li>
-              <span class="btn btn-default btn-rect">Pages: {{bill_list.current_page}} / {{bill_list.total_pages}}</span>
+              <span class="btn btn-default btn-rect">{{ 'pages'| translate }} {{bill_list.current_page}} / {{bill_list.total_pages}}</span>
             </ul>
          </div>
       </div>
