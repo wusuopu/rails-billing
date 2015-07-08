@@ -100,12 +100,13 @@ test:
         max_retries: 1
         retry_interval: 0
 
+<% if ENV['OPENSHIFT_MONGODB_DB_HOST'] %>
 production:
   sessions:
     default:
-      database: biliing
-      # Provides the hosts the default session can connect to. Must be an array
-      # of host:port pairs. (required)
+      database: <%= ENV['OPENSHIFT_APP_NAME'] %>
       hosts:
-        - localhost:27017
-      options:
+        - <%="#{ENV['OPENSHIFT_MONGODB_DB_HOST']}:#{ENV['OPENSHIFT_MONGODB_DB_PORT']}" %>
+      username: <%= ENV['OPENSHIFT_MONGODB_DB_USERNAME'] %>
+      password: <%= ENV['OPENSHIFT_MONGODB_DB_PASSWORD'] %>
+<% end %>
