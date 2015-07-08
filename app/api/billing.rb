@@ -131,6 +131,36 @@ module Billing
         end
       end
 
+      # GET /bills/summary
+      desc "Get bill summary."
+      get :summary do
+        today = Date.today
+        this_month = today.beginning_of_month
+        next_month = this_month.next_month
+        this_week = today.beginning_of_week :sunday
+        next_week = this_week.next_week :sunday
+        {
+          income: {
+            month: Bill.where({type: Category::TYPE::INCOME,
+                               date: {'$gte' => this_month, '$lt' => next_month}}).
+                        sum('amount'),
+            week: Bill.where({type: Category::TYPE::INCOME,
+                              date: {'$gte' => this_week, '$lt' => next_week}}).
+                       sum('amount'),
+            total: Bill.where({type: Category::TYPE::INCOME}).sum('amount')
+          },
+          expense: {
+            month: Bill.where({type: Category::TYPE::EXPENSE,
+                               date: {'$gte' => this_month, '$lt' => next_month}}).
+                        sum('amount'),
+            week: Bill.where({type: Category::TYPE::EXPENSE,
+                              date: {'$gte' => this_week, '$lt' => next_week}}).
+                       sum('amount'),
+            total: Bill.where({type: Category::TYPE::EXPENSE}).sum('amount')
+          }
+        }
+      end
+
 
       desc "Return a bill."
       params do

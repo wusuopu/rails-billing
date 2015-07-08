@@ -63,6 +63,13 @@ myApp.factory('billFactory', ['queryService', '$q', (queryService, $q)->
         params: {_: Date.now()},
         timeout: 80000
       })
+    getSummary: ()->
+      queryService.http($q, {
+        method: 'GET',
+        url: '/api/v1/bills/summary.json',
+        params: {_: Date.now()},
+        timeout: 80000
+      })
   }
 ])
 
@@ -72,6 +79,11 @@ myApp.config ['$routeProvider', '$translateProvider', ($routeProvider, $translat
     nav_icon: "dashboard",
     templateUrl: 'index.html',
     controller: 'DashboardController'
+    resolve: {
+      bill_summary: ['billFactory', (billFactory)->
+        billFactory.getSummary()
+      ]
+    }
   }).when('/category', {        # 分类
     title: "page.category",
     nav_icon: "list",
@@ -186,6 +198,15 @@ myApp.config ['$routeProvider', '$translateProvider', ($routeProvider, $translat
     'page.bill_new': 'New Billing'
     'page.bill_edit': 'Edit Billing'
     'page.bill_chart': 'Billing Chart'
+    'nav.category': 'Category'
+    'nav.new': 'New'
+    'nav.bill': 'Bill'
+    'nav.bill.chart': 'Chart'
+    'income': 'Income'
+    'expense': 'Expense'
+    'summary.week': 'This week'
+    'summary.month': 'This month'
+    'summary.total': 'Total'
 
   }).translations('zh-cn', {
     'edit_op': '编辑'
@@ -220,13 +241,23 @@ myApp.config ['$routeProvider', '$translateProvider', ($routeProvider, $translat
     'page.bill_new': '记帐'
     'page.bill_edit': '编辑帐目'
     'page.bill_chart': '帐目图表'
+    'nav.category': '分类'
+    'nav.new': '新建'
+    'nav.bill': '帐目'
+    'nav.bill.chart': '图表'
+    'income': '收入'
+    'expense': '支出'
+    'summary.week': '本周'
+    'summary.month': '本月'
+    'summary.total': '总共'
   }).fallbackLanguage(['en'])
   $translateProvider.determinePreferredLanguage(()->
     if navigator.locale then navigator.locale else ""
   )
 ]
 
-myApp.controller 'DashboardController', ['$scope', ($scope)->
+myApp.controller 'DashboardController', ['$scope', 'bill_summary', ($scope, bill_summary)->
+  $scope.bill_summary = bill_summary
 ]
 
 # 分类列表

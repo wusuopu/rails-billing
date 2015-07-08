@@ -4,3 +4,10 @@
 .outer .inner .main-content{
     margin-top:10px;
 }
+.breadcrumb > li.nav-path + li.nav-path::before {
+    content: " > ";
+}
+
+.breadcrumb.path{
+    margin-bottom: 5px;
+}
