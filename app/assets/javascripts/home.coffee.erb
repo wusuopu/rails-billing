@@ -57,12 +57,17 @@ myApp.factory('billFactory', ['queryService', '$q', (queryService, $q)->
         timeout: 80000
       })
     getItem: (id)->
-      queryService.http($q, {
-        method: 'GET',
-        url: '/api/v1/bills/' + id + '.json',
-        params: {_: Date.now()},
-        timeout: 80000
-      })
+      if id
+        queryService.http($q, {
+          method: 'GET',
+          url: '/api/v1/bills/' + id + '.json',
+          params: {_: Date.now()},
+          timeout: 80000
+        })
+      else
+        {
+          date: (new Date()).toLocaleFormat("%Y-%m-%d")
+        }
     getSummary: ()->
       queryService.http($q, {
         method: 'GET',
@@ -137,7 +142,7 @@ myApp.config ['$routeProvider', '$translateProvider', ($routeProvider, $translat
     controller: 'BillDetailController',
     resolve: {
       bill: ['billFactory', (billFactory)->
-        {}
+        billFactory.getItem()
       ]
       category_list: ['categoryFactory', (categoryFactory)->
         categoryFactory.getAll()
