@@ -18,6 +18,7 @@
 //= require angular-flash-messages/angular-flash
 //= require angular-loading-bar/build/loading-bar
 //= require angular-translate/angular-translate
+//= require  angular-bootstrap/ui-bootstrap-tpls
 //= require angular-rails-templates
 //= require bootstrap-sass-official/assets/javascripts/bootstrap
 //= require bootstrap-sass-official/assets/javascripts/bootstrap-sprockets

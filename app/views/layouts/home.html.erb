@@ -50,8 +50,28 @@
               <!-- .nav -->
               <ul class="nav navbar-nav">
                 <li> <a href="#/"><%= t('dashboard') %></a>  </li>
-                <li> <a href="#/category"><%= t('category') %></a>  </li>
-                <li> <a href="#/bill"><%= t('bill') %></a>  </li>
+                <li class='dropdown' dropdown>
+                  <a href class="dropdown-toggle" dropdown-toggle>
+                    <%= t('category') %>
+                    <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#/category"><%= t('category_list') %></a></li>
+                    <li><a href="#/category/new"><%= t('category_new') %></a></li>
+                  </ul>
+                </li>
+                <li class='dropdown' dropdown>
+                  <a href class="dropdown-toggle" dropdown-toggle>
+                    <%= t('bill') %>
+                    <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#/bill"><%= t('bill_billing') %></a></li>
+                    <li><a href="#/bill/new"><%= t('bill_new') %></a></li>
+                    <li class="divider"></li>
+                    <li><a href="#/bill/chart"><%= t('bill_chart') %></a></li>
+                  </ul>
+                </li>
               </ul><!-- /.nav -->
             </div>
           </div><!-- /.container-fluid -->
