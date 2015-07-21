@@ -109,7 +109,7 @@ module Billing
       # GET /bills
       desc "Return bill list."
       get jbuilder: 'bill/index' do
-        @bills = Bill.page(params[:page]).per(PER_PAGE).order(date: 1)
+        @bills = Bill.page(params[:page]).per(PER_PAGE).order(date: -1)
       end
       # POST /bills
       desc "Create a bill record"

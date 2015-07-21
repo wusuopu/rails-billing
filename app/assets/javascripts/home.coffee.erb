@@ -66,8 +66,9 @@ myApp.factory('billFactory', ['queryService', '$q', (queryService, $q)->
           timeout: 80000
         })
       else
+        d = new Date()
         {
-          date: (new Date()).toLocaleFormat("%Y-%m-%d")
+          date: d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
         }
     getSummary: ()->
       queryService.http($q, {
