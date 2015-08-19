@@ -425,6 +425,7 @@ myApp.controller 'BillListController', \
 myApp.controller 'BillDetailController', \
                  ['$scope', '$http', '$location', '$translate', 'flash', 'bill', 'category_list', \
                   ($scope, $http, $location, $translate, flash, bill, category_list)->
+  $scope.isSubmitted = false
   $scope.bill = bill || {}
   $scope.category_list = category_list || []
   $translate(['category_type_0', 'category_type_1']).then((translations)->
@@ -474,6 +475,8 @@ myApp.controller 'BillDetailController', \
     if $scope.bill.category
       data.category_id = $scope.bill.category.id
 
+    $scope.isSubmitted = true
+
     $http({
         method: method,
         url: url,
@@ -488,6 +491,7 @@ myApp.controller 'BillDetailController', \
       ).
       error((data, status, headers)->
         flash.danger data.error
+        $scope.isSubmitted = false
       )
 ]
 myApp.controller 'BillChartController', \

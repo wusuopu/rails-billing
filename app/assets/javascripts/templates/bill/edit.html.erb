@@ -2,7 +2,7 @@
   <div class="form-group" ng-class="{'has-error' : billForm.amount.$invalid && billForm.amount.$dirty, 'has-success' : billForm.amount.$valid}">
     <label class="control-label col-lg-4" for="amount">{{"bill_amount"| translate }}</label>
     <div class="col-lg-8">
-      <input type="text" class="form-control" placeholder="Amount" name="amount" ng-model="bill.amount" required>
+      <input type="number" class="form-control" placeholder="Amount" name="amount" ng-model="bill.amount" required>
     </div>
   </div><!-- /.form-group -->
   <div class="form-group">
@@ -40,7 +40,7 @@
   </div><!-- /.form-group -->
   <div class="form-group">
     <div class="col-lg-8 col-lg-offset-4">
-      <input class="btn btn-primary btn-rect" type="submit" value="Submit" />
+      <input class="btn btn-primary btn-rect" type="submit" value="Submit" ng-disabled="isSubmitted" />
     </div>
   </div><!-- /.form-group -->
 </form>
